@@ -12,7 +12,8 @@ import {
   TrendingUp,
   TrendingDown,
 } from 'lucide-react';
-import CountUp from 'react-countup';
+import CountUpModule from 'react-countup';
+const CountUp = (CountUpModule as any).default ?? CountUpModule;
 import SectionCard from '../../../design-system/SectionCard';
 import Badge from '../../../design-system/Badge';
 import { PopulationStat } from '../types';

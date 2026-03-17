@@ -4,7 +4,8 @@ import Badge from '../../../design-system/Badge';
 import { DRGRow, FinancialSummary, MarginOpportunity } from '../types';
 import { formatCurrency, formatNumber } from '../utils';
 import { TrendingUp, TrendingDown, ArrowRight, ChevronUp, ChevronDown, Lock } from 'lucide-react';
-import CountUp from 'react-countup';
+import CountUpModule from 'react-countup';
+const CountUp = (CountUpModule as any).default ?? CountUpModule;
 
 interface FinancialBenchmarkingProps {
   hasUploadedFiles: boolean;
