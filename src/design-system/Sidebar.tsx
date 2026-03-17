@@ -26,6 +26,7 @@ interface NavItem {
 // Approved module palette — no purple/violet
 const moduleNavItems: NavItem[] = [
   { label: 'Cardiovascular Service Line', icon: Activity, path: '/cv', glowColor: '#D4707F', accentBg: 'rgba(155, 36, 56, 0.15)' },
+  { label: 'Heart Failure',        icon: Heart,        path: '/hf',         glowColor: '#C8D4DC', accentBg: 'rgba(200, 212, 220, 0.15)' },
   { label: 'Electrophysiology',    icon: Zap,          path: '/ep',         glowColor: '#8FA8BC', accentBg: 'rgba(143, 168, 188, 0.15)' },
   { label: 'Structural Heart',     icon: Stethoscope,  path: '/structural', glowColor: '#D4707F', accentBg: 'rgba(155, 36, 56, 0.15)' },
   { label: 'Coronary',             icon: GitBranch,     path: '/coronary',   glowColor: '#5CAA72', accentBg: 'rgba(26, 74, 46, 0.15)' },
@@ -201,16 +202,6 @@ export default function Sidebar() {
           )}
         </div>
 
-        {/* Dr. Smith footer */}
-        {expanded && (
-          <div className="flex items-center gap-2 px-3 pt-2 mt-1 border-t border-white/[0.06]">
-            <UserCircle size={32} className="shrink-0 text-white/50" />
-            <div className="min-w-0">
-              <p className="text-xs font-medium text-white/80 truncate">Dr. Smith</p>
-              <p className="text-[10px] text-white/40 truncate">Cardiovascular</p>
-            </div>
-          </div>
-        )}
       </div>
     </aside>
   );
