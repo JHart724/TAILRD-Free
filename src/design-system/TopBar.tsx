@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Bell } from 'lucide-react';
+import { Bell, UserCircle } from 'lucide-react';
 import { NotificationPanel } from '../components/notifications';
 
 interface TopBarProps {
@@ -78,10 +78,7 @@ export default function TopBar({ moduleName, viewName }: TopBarProps) {
           </button>
           <div className="flex items-center gap-2">
             <span className="text-sm" style={{ color: '#0A1828' }}>Dr. Smith</span>
-            <div
-              className="w-8 h-8 rounded-full sidebar-avatar"
-              aria-label="User avatar"
-            />
+            <UserCircle size={32} className="text-titanium-400" />
           </div>
         </div>
       </header>
