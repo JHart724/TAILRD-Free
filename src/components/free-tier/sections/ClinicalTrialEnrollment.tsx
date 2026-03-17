@@ -86,7 +86,7 @@ const TRIAL_DETAILS: Record<string, TrialDetail> = {
 
 const ClinicalTrialEnrollment: React.FC = () => {
   const [activeLockedTrial, setActiveLockedTrial] = useState<string | null>(null);
-  const [expandedTrial, setExpandedTrial] = useState<string | null>(null);
+  const [expandedTrial, setExpandedTrial] = useState<string | null>('NCT04153149');
 
   return (
     <SectionCard

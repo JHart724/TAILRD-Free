@@ -69,16 +69,17 @@ const CareGapFunnels: React.FC<CareGapFunnelsProps> = ({
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {funnels.map((funnel, funnelIndex) => {
           const lastStage = funnel.stages[funnel.stages.length - 1];
+          const isLocked = funnelIndex >= 2; // Lock Hypertension & Diabetes funnels
 
           return (
-            <div key={funnelIndex}>
+            <div key={funnelIndex} className="relative">
               {/* Funnel Title */}
               <div className="text-sm font-body font-semibold text-titanium-700 text-center mb-3">
                 {funnel.title}
               </div>
 
               {/* Funnel Stages */}
-              <div className="flex flex-col items-center gap-1">
+              <div className={`flex flex-col items-center gap-1 ${isLocked ? 'filter blur-sm pointer-events-none select-none' : ''}`} aria-hidden={isLocked ? 'true' : undefined}>
                 {funnel.stages.map((stage, stageIndex) => {
                   const width = WIDTHS[stageIndex] ?? WIDTHS[WIDTHS.length - 1];
                   const bgColor = BG_COLORS[stageIndex] ?? BG_COLORS[BG_COLORS.length - 1];
@@ -91,8 +92,8 @@ const CareGapFunnels: React.FC<CareGapFunnelsProps> = ({
                   return (
                     <div key={stageIndex} className="w-full flex flex-col items-center">
                       <div
-                        className={`${width} ${bgColor} mx-auto rounded-md py-2.5 px-3 text-center transition-all duration-200 cursor-pointer hover:opacity-80`}
-                        onClick={() =>
+                        className={`${width} ${bgColor} mx-auto rounded-md py-2.5 px-3 text-center transition-all duration-200 ${isLocked ? '' : 'cursor-pointer hover:opacity-80'}`}
+                        onClick={isLocked ? undefined : () =>
                           setExpandedStage(prev =>
                             prev?.funnelIndex === funnelIndex && prev?.stageIndex === stageIndex
                               ? null
@@ -112,7 +113,7 @@ const CareGapFunnels: React.FC<CareGapFunnelsProps> = ({
                       </div>
 
                       {/* Stage expanded panel */}
-                      {isStageExpanded && stageDetail && (
+                      {isStageExpanded && stageDetail && !isLocked && (
                         <div className="w-full bg-white border border-chrome-200 rounded-lg p-2.5 text-xs space-y-1.5 mt-1">
                           <div>
                             <span className="font-semibold text-titanium-700">Why patients drop off: </span>
@@ -138,17 +139,27 @@ const CareGapFunnels: React.FC<CareGapFunnelsProps> = ({
               </div>
 
               {/* Conversion Rate */}
-              {lastStage && (
+              {lastStage && !isLocked && (
                 <div className="text-xs font-body text-titanium-500 text-center mt-2">
                   {lastStage.percentage}% {lastStage.label.toLowerCase()}
                 </div>
               )}
 
               {/* Dollar opportunity */}
-              <div className="mt-2 bg-emerald-50 border border-emerald-100 rounded-lg px-2 py-1.5 text-center">
-                <div className="text-[10px] text-emerald-600 font-body">Closing gap =</div>
-                <div className="text-xs font-data font-bold text-emerald-700">{FUNNEL_VALUES[funnelIndex]}</div>
-              </div>
+              {!isLocked && (
+                <div className="mt-2 bg-emerald-50 border border-emerald-100 rounded-lg px-2 py-1.5 text-center">
+                  <div className="text-[10px] text-emerald-600 font-body">Closing gap =</div>
+                  <div className="text-xs font-data font-bold text-emerald-700">{FUNNEL_VALUES[funnelIndex]}</div>
+                </div>
+              )}
+
+              {/* Lock overlay for funnels 3 & 4 */}
+              {isLocked && (
+                <div className="absolute inset-0 top-8 flex flex-col items-center justify-center gap-2 bg-white/50 backdrop-blur-[1px] rounded-lg">
+                  <Lock className="w-5 h-5 text-titanium-400" />
+                  <p className="text-xs font-semibold text-titanium-600 text-center px-4">Available in full platform</p>
+                </div>
+              )}
             </div>
           );
         })}

@@ -193,6 +193,11 @@ const KPIStrip: React.FC<KPIStripProps> = ({ hasUploadedFiles, kpis }) => {
                   <MiniSparkline data={details.trend} />
                 </div>
                 <p className="text-titanium-500 leading-snug">{details.interpretation}</p>
+                <div className="bg-amber-50 border border-amber-200 rounded-md px-2.5 py-2 mt-1">
+                  <p className="text-[10px] text-amber-700 leading-snug">
+                    📊 This is national benchmark data — <span className="font-semibold">connect your EHR</span> to see your actual numbers
+                  </p>
+                </div>
               </div>
             )}
 

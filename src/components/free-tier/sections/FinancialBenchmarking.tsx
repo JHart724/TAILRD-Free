@@ -54,6 +54,8 @@ const FinancialBenchmarking: React.FC<FinancialBenchmarkingProps> = ({
   const [sortField, setSortField] = useState<SortField>('volume');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [expandedOpportunity, setExpandedOpportunity] = useState<string | null>(null);
+  const [expandedCFO, setExpandedCFO] = useState<string | null>(null);
+  const [expandedPayer, setExpandedPayer] = useState<string | null>(null);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -105,6 +107,20 @@ const FinancialBenchmarking: React.FC<FinancialBenchmarkingProps> = ({
     { label: 'Margin', field: 'margin', align: 'right' },
   ];
 
+  const CFO_CONTEXT: Record<string, string> = {
+    'Total CV Revenue': 'Revenue growth is driven primarily by Heart Failure (+$8.2M) and EP (+$3.1M) volume increases. National avg for comparable CV programs: $128M.',
+    'Operating Margin': 'Above national median of 14.8%. Margin expansion driven by DRG coding improvements and reduced readmission penalties.',
+    'Case Mix Index': 'CMI of 1.42 indicates higher-acuity patient mix vs. national avg of 1.34. Supports higher reimbursement per discharge.',
+    'Payer Mix Complexity': 'Score reflects weighted payer diversity. Higher complexity correlates with more varied reimbursement rates and denial patterns.',
+  };
+
+  const PAYER_CONTEXT: Record<string, string> = {
+    'Medicare': 'Accounts for 48% of CV volume. Average reimbursement $12,400/case. CMS rate updates effective October annually.',
+    'Medicaid': 'Lower reimbursement at ~62% of Medicare rates. High-volume HF admissions skew this segment.',
+    'Commercial': 'Highest margin segment at avg $18,200/case. Contract renegotiation opportunity identified.',
+    'Self-Pay / Other': 'Smallest segment. Bad debt rate ~34%. Financial counseling program could improve collections.',
+  };
+
   return (
     <SectionCard
       title="Financial Benchmarking"
@@ -118,11 +134,14 @@ const FinancialBenchmarking: React.FC<FinancialBenchmarkingProps> = ({
         {financialSummary.map((item) => {
           const value = hasUploadedFiles ? item.stateBValue : item.stateAValue;
           const isPositive = item.trend.direction === 'up';
+          const isCFOExpanded = expandedCFO === item.label;
+          const context = CFO_CONTEXT[item.label];
 
           return (
             <div
               key={item.label}
-              className="bg-chrome-50 rounded-xl p-4 text-center"
+              className="bg-chrome-50 rounded-xl p-4 text-center cursor-pointer hover:shadow-md transition-shadow"
+              onClick={() => setExpandedCFO(prev => prev === item.label ? null : item.label)}
             >
               <div className="font-data text-xl font-bold text-titanium-800">
                 {item.unit === 'currency' ? (
@@ -172,6 +191,11 @@ const FinancialBenchmarking: React.FC<FinancialBenchmarkingProps> = ({
                   {item.trend.value}
                 </span>
               </div>
+              {isCFOExpanded && context && (
+                <div className="bg-white border border-chrome-100 rounded-lg p-2.5 mt-3 text-xs text-left text-titanium-500 leading-snug">
+                  {context}
+                </div>
+              )}
             </div>
           );
         })}
@@ -194,15 +218,29 @@ const FinancialBenchmarking: React.FC<FinancialBenchmarkingProps> = ({
               { label: 'Medicaid', pct: 22, color: 'bg-amber-400' },
               { label: 'Commercial', pct: 24, color: 'bg-emerald-500' },
               { label: 'Self-Pay / Other', pct: 6, color: 'bg-titanium-300' },
-            ].map(({ label, pct, color }) => (
-              <div key={label} className="flex items-center gap-3">
-                <div className="w-28 text-xs text-titanium-600 font-body text-right shrink-0">{label}</div>
-                <div className="flex-1 bg-chrome-200 rounded-full h-3">
-                  <div className={`${color} h-3 rounded-full transition-all duration-700`} style={{ width: `${pct}%` }} />
+            ].map(({ label, pct, color }) => {
+              const isPayerExpanded = expandedPayer === label;
+              const payerContext = PAYER_CONTEXT[label];
+              return (
+                <div key={label}>
+                  <div
+                    className="flex items-center gap-3 cursor-pointer hover:bg-chrome-100 rounded-md px-1 -mx-1 py-0.5 transition-colors"
+                    onClick={() => setExpandedPayer(prev => prev === label ? null : label)}
+                  >
+                    <div className="w-28 text-xs text-titanium-600 font-body text-right shrink-0">{label}</div>
+                    <div className="flex-1 bg-chrome-200 rounded-full h-3">
+                      <div className={`${color} h-3 rounded-full transition-all duration-700`} style={{ width: `${pct}%` }} />
+                    </div>
+                    <div className="w-10 text-xs font-data font-semibold text-titanium-700 text-right">{pct}%</div>
+                  </div>
+                  {isPayerExpanded && payerContext && (
+                    <div className="ml-[7.5rem] bg-white border border-chrome-100 rounded-lg p-2.5 mt-1 mb-1 text-xs text-titanium-500 leading-snug">
+                      {payerContext}
+                    </div>
+                  )}
                 </div>
-                <div className="w-10 text-xs font-data font-semibold text-titanium-700 text-right">{pct}%</div>
-              </div>
-            ))}
+              );
+            })}
           </div>
           <p className="text-[10px] text-titanium-400 font-body mt-3 text-center">
             CMS estimate · Upgrade to see underpayment analysis, contract variance, and denial rates by payer

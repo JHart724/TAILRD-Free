@@ -100,8 +100,8 @@ const PhysicianVarianceTeaser: React.FC = () => {
         </div>
       </div>
 
-      {/* Blurred table with lock overlay */}
-      <div className="relative rounded-xl border border-chrome-200 overflow-hidden">
+      {/* Table with 1 visible row + blurred remainder */}
+      <div className="rounded-xl border border-chrome-200 overflow-hidden">
         {/* Table header — visible */}
         <div className="bg-chrome-50 border-b border-chrome-200">
           <table className="w-full">
@@ -122,47 +122,63 @@ const PhysicianVarianceTeaser: React.FC = () => {
           </table>
         </div>
 
-        {/* Blurred rows */}
-        <div
-          style={{ filter: 'blur(8px)', userSelect: 'none', pointerEvents: 'none' }}
-          aria-hidden="true"
-        >
-          <table className="w-full">
-            <tbody>
-              {BLURRED_ROWS.map((row, i) => (
-                <tr key={i} className="border-b border-chrome-100 last:border-b-0">
-                  <td className="px-4 py-3 text-sm text-titanium-700 font-medium w-40">
-                    {row.name}
-                  </td>
-                  <td className="px-4 py-3 text-sm font-data text-titanium-700">{row.gdmt}</td>
-                  <td className="px-4 py-3 text-sm font-data text-titanium-700">{row.readmit}</td>
-                  <td className="px-4 py-3 text-sm font-data text-titanium-700">{row.los}</td>
-                  <td className="px-4 py-3 text-sm font-data text-titanium-700">{row.score}</td>
-                  <td className="px-4 py-3 text-sm text-emerald-500">{row.dot}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        {/* First row — visible (anonymized) */}
+        <table className="w-full">
+          <tbody>
+            <tr className="border-b border-chrome-100 bg-white">
+              <td className="px-4 py-3 text-sm text-titanium-700 font-medium w-40">Physician A</td>
+              <td className="px-4 py-3 text-sm font-data text-titanium-700">91%</td>
+              <td className="px-4 py-3 text-sm font-data text-titanium-700">9.8%</td>
+              <td className="px-4 py-3 text-sm font-data text-titanium-700">3.9d</td>
+              <td className="px-4 py-3 text-sm font-data text-titanium-700">96</td>
+              <td className="px-4 py-3 text-sm text-emerald-500">●</td>
+            </tr>
+          </tbody>
+        </table>
 
-        {/* Lock overlay */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-white/60 backdrop-blur-[1px]">
-          <div className="flex flex-col items-center gap-2 text-center px-6">
-            <Lock className="w-8 h-8 text-titanium-400" />
-            <p className="text-sm font-semibold text-titanium-600">
-              47 physicians in your panel
-            </p>
-            <p className="text-xs text-titanium-500 max-w-xs leading-snug">
-              Upgrade to see individual physician performance, outlier detection, and coaching
-              recommendations
-            </p>
-            <button
-              type="button"
-              className="mt-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white shadow-md hover:opacity-90 transition-opacity"
-              style={carmonaGradient}
-            >
-              Unlock Physician Analytics →
-            </button>
+        {/* Remaining rows — blurred with lock overlay */}
+        <div className="relative">
+          <div
+            style={{ filter: 'blur(8px)', userSelect: 'none', pointerEvents: 'none' }}
+            aria-hidden="true"
+          >
+            <table className="w-full">
+              <tbody>
+                {BLURRED_ROWS.slice(1).map((row, i) => (
+                  <tr key={i} className="border-b border-chrome-100 last:border-b-0">
+                    <td className="px-4 py-3 text-sm text-titanium-700 font-medium w-40">
+                      {row.name}
+                    </td>
+                    <td className="px-4 py-3 text-sm font-data text-titanium-700">{row.gdmt}</td>
+                    <td className="px-4 py-3 text-sm font-data text-titanium-700">{row.readmit}</td>
+                    <td className="px-4 py-3 text-sm font-data text-titanium-700">{row.los}</td>
+                    <td className="px-4 py-3 text-sm font-data text-titanium-700">{row.score}</td>
+                    <td className="px-4 py-3 text-sm text-emerald-500">{row.dot}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Lock overlay — covers only blurred rows */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-white/60 backdrop-blur-[1px]">
+            <div className="flex flex-col items-center gap-2 text-center px-6">
+              <Lock className="w-8 h-8 text-titanium-400" />
+              <p className="text-sm font-semibold text-titanium-600">
+                46 more physicians in your panel
+              </p>
+              <p className="text-xs text-titanium-500 max-w-xs leading-snug">
+                Upgrade to see all physician performance, outlier detection, and coaching
+                recommendations
+              </p>
+              <button
+                type="button"
+                className="mt-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white shadow-md hover:opacity-90 transition-opacity"
+                style={carmonaGradient}
+              >
+                Unlock Physician Analytics →
+              </button>
+            </div>
           </div>
         </div>
       </div>

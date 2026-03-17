@@ -27,25 +27,61 @@ const PREMIUM_FEATURES = [
 
 const CompetitorMarketShare: React.FC = () => {
   const [showYourDetail, setShowYourDetail] = useState(false);
+  const [expandedStat, setExpandedStat] = useState<string | null>(null);
+
+  const toggleStat = (id: string) => setExpandedStat(prev => prev === id ? null : id);
 
   return (
     <SectionCard
       title="Competitive Market Intelligence"
       subtitle="CV service line market position in your primary service area"
     >
-      {/* Top stat cards */}
+      {/* Top stat cards — clickable */}
       <div className="grid grid-cols-3 gap-3 mb-6">
-        <div className="bg-chrome-50 border border-chrome-200 rounded-xl p-4 text-center">
+        <div
+          className="bg-chrome-50 border border-chrome-200 rounded-xl p-4 text-center cursor-pointer hover:shadow-md transition-shadow"
+          onClick={() => toggleStat('share')}
+        >
           <p className="text-2xl font-bold font-data text-chrome-700">34%</p>
           <p className="text-xs text-titanium-500 mt-1 leading-snug">Your Market Share</p>
+          {expandedStat === 'share' && (
+            <div className="bg-white border border-chrome-100 rounded-lg p-2.5 mt-3 text-xs text-left space-y-1">
+              <p className="text-titanium-600"><span className="font-semibold text-titanium-700">Heart Failure:</span> 41% share (strongest)</p>
+              <p className="text-titanium-600"><span className="font-semibold text-titanium-700">Electrophysiology:</span> 29% share</p>
+              <p className="text-titanium-600"><span className="font-semibold text-titanium-700">Structural Heart:</span> 36% share</p>
+              <p className="text-titanium-400 text-[10px] mt-1">Based on CMS claims data for your primary service area</p>
+            </div>
+          )}
         </div>
-        <div className="bg-chrome-50 border border-chrome-200 rounded-xl p-4 text-center">
+        <div
+          className="bg-chrome-50 border border-chrome-200 rounded-xl p-4 text-center cursor-pointer hover:shadow-md transition-shadow"
+          onClick={() => toggleStat('competitors')}
+        >
           <p className="text-2xl font-bold font-data text-titanium-800">4</p>
           <p className="text-xs text-titanium-500 mt-1 leading-snug">Competitors Identified</p>
+          {expandedStat === 'competitors' && (
+            <div className="bg-white border border-chrome-100 rounded-lg p-2.5 mt-3 text-xs text-left space-y-1">
+              <p className="text-titanium-600">Competitor A — <span className="font-data font-semibold">28%</span> share</p>
+              <p className="text-titanium-600">Competitor B — <span className="font-data font-semibold">19%</span> share</p>
+              <p className="text-titanium-600">Competitor C — <span className="font-data font-semibold">14%</span> share</p>
+              <p className="text-titanium-600">Competitor D — <span className="font-data font-semibold">5%</span> share</p>
+              <p className="text-titanium-400 text-[10px] mt-1">Names revealed with Premium upgrade</p>
+            </div>
+          )}
         </div>
-        <div className="bg-chrome-50 border border-chrome-200 rounded-xl p-4 text-center">
+        <div
+          className="bg-chrome-50 border border-chrome-200 rounded-xl p-4 text-center cursor-pointer hover:shadow-md transition-shadow"
+          onClick={() => toggleStat('opportunity')}
+        >
           <p className="text-2xl font-bold font-data text-emerald-600">$18.4M</p>
           <p className="text-xs text-titanium-500 mt-1 leading-snug">Estimated Market Opportunity</p>
+          {expandedStat === 'opportunity' && (
+            <div className="bg-white border border-chrome-100 rounded-lg p-2.5 mt-3 text-xs text-left space-y-1">
+              <p className="text-titanium-600"><span className="font-semibold text-titanium-700">Methodology:</span> CMS claims volume in your 12 primary ZIP codes × avg reimbursement per DRG × competitor share delta</p>
+              <p className="text-titanium-600"><span className="font-semibold text-titanium-700">Largest gap:</span> EP ablation referrals ($4.2M)</p>
+              <p className="text-titanium-600"><span className="font-semibold text-titanium-700">Fastest win:</span> Outpatient cardiology consults ($2.8M)</p>
+            </div>
+          )}
         </div>
       </div>
 

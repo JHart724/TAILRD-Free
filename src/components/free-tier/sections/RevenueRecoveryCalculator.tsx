@@ -283,6 +283,11 @@ const RevenueRecoveryCalculator: React.FC = () => {
           <p className="text-[11px] text-titanium-400 mt-1">
             Annualised estimate · connect EHR data to verify
           </p>
+          <div className="bg-amber-50 border border-amber-200 rounded-md px-3 py-2 mt-2">
+            <p className="text-[11px] text-amber-700 leading-snug">
+              📊 These estimates use industry averages for facilities your size — <span className="font-semibold">connect your EHR</span> for verified projections based on your actual patient data
+            </p>
+          </div>
         </div>
 
         <button
